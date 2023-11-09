@@ -1,0 +1,239 @@
+chat data 
+{
+            "username": "Aditya Raj",
+            "profileImage": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg",
+            "lastMessage": "Ya, That's Right",
+            "lastMessageTime": "10 min ago",
+            "unreadMessages": "5"
+        },
+        {
+            "username": "Aniket Raj",
+            "profileImage": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/2.jpg",
+            "lastMessage": "Ok",
+            "lastMessageTime": "7 min ago",
+            "unreadMessages": "0"
+        },
+        {
+            "username": "Elon Musk",
+            "profileImage": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/3.jpg",
+            "lastMessage": "I'll Buy Twitter",
+            "lastMessageTime": "6 min ago",
+            "unreadMessages": "3"
+        },
+        {
+            "username": "Mark Zukerburg",
+            "profileImage": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/4.jpg",
+            "lastMessage": "Musk will fail!",
+            "lastMessageTime": "2 min ago",
+            "unreadMessages": "0"
+        },
+        {
+            "username": "Warren Buffet",
+            "profileImage": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg",
+            "lastMessage": "Stocks will growt",
+            "lastMessageTime": "2 min ago",
+            "unreadMessages": "1"
+        },
+        {
+            "username": "Mummy",
+            "profileImage": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg",
+            "lastMessage": "Ok, Fine.",
+            "lastMessageTime": "7 min ago",
+            "unreadMessages": "0"
+        },
+        {
+            "username": "Papa",
+            "profileImage": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg",
+            "lastMessage": "... I'll think about it",
+            "lastMessageTime": "1 min ago",
+            "unreadMessages": "0"
+        }
+
+message data 
+
+[
+   
+{
+    "id":"u1",
+    "message": "Hi",
+    "key":"1",
+    "time":"10:00 pm",
+    "type":"text"
+},
+{
+    "id":"u2",
+    "message": "Hi",
+    "key":"2",
+    "time":"10:01 pm",
+    "type":"text"
+},
+{
+    "id":"u1",
+    "message": "Do you know how it is?",
+    "key":"3",
+    "time":"10:05 pm",
+    "type":"text"
+
+},
+{
+    "id":"u1",
+    "imageSource":"https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg",
+    "key": "101",
+    "type": "image",
+    "time":"10:06 pm"
+},
+{
+    "id":"u2",
+    "message": "No",
+    "key":"4",
+    "time":"10:00 pm",
+    "type":"text"
+},
+{
+    "id":"u1",
+    "message": "But you are intelligent!",
+    "key":"5",
+    "time":"10:06 pm",
+    "type":"text"
+},
+{
+    "id":"u2",
+    "message": "It doesn't mean I know everything?",
+    "key":"6",
+    "time":"10:07 pm",
+    "type":"text"
+},
+{
+    "id":"u2",
+    "imageSource":"https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/2.jpg",
+    "key": "121",
+    "type": "image",
+    "time":"10:00 pm"
+},
+{
+    "id":"u1",
+    "message": "Ya You're right?",
+    "key":"7",
+    "time":"10:07 pm",
+    "type":"text"
+},
+{
+    "id":"u2",
+    "message": "Thanks for understanding. most people don't understand this!",
+    "key":"8",
+    "time":"10:08 pm",
+    "type":"text"
+},
+{
+    "id":"u1",
+    "message": "Com'on we are friends dont't feel like this",
+    "key":"9",
+    "time":"10:08 pm",
+    "type":"text"
+},
+{
+    "id":"u2",
+    "message": "That's fine.",
+    "key":"10",
+    "time":"10:08 pm",
+    "type":"text"
+},
+{
+    "id":"u1",
+    "message": "Okay. Bye",
+    "key":"11",
+    "time":"10:10 pm",
+    "type":"text"
+},
+{
+    "id":"u1",
+    "imageSource":"https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/3.jpg",
+    "key": "131",
+    "type": "image",
+    "time":"10:01 pm"
+},
+{
+    "id":"u1",
+    "message": "Hi",
+    "key":"12",
+    "time":"10:00 pm",
+    "type":"text"
+},
+{
+    "id":"u2",
+    "message": "Hi",
+    "key":"13",
+    "time":"10:01 pm",
+    "type":"text"
+},
+{
+    "id":"u1",
+    "message": "Do you know how it is?",
+    "key":"14",
+    "time":"10:05 pm",
+    "type":"text"
+},
+{
+    "id":"u2",
+    "imageSource":"https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/4.jpg",
+    "key": "101",
+    "type": "image",
+    "time":"10:01 pm"
+},
+{
+    "id":"u2",
+    "message": "No",
+    "key":"15",
+    "time":"10:00 pm",
+    "type":"text"
+},
+{
+    "id":"u1",
+    "message": "But you are intelligent!",
+    "key":"16",
+    "time":"10:06 pm",
+    "type":"text"
+},
+{
+    "id":"u2",
+    "message": "It doesn't mean I know everything?",
+    "key":"17",
+    "time":"10:07 pm",
+    "type":"text"
+},
+{
+    "id":"u1",
+    "message": "Ya You're right?",
+    "key":"18",
+    "time":"10:07 pm",
+    "type":"text"
+},
+{
+    "id":"u2",
+    "message": "Thanks for understanding. most people don't understand this!",
+    "key":"19",
+    "time":"10:08 pm",
+    "type":"text"
+},
+{
+    "id":"u1",
+    "message": "Com'on we are friends dont't feel like this",
+    "key":"20",
+    "time":"10:08 pm",
+    "type":"text"
+},
+{
+    "id":"u2",
+    "message": "That's fine.",
+    "key":"21",
+    "time":"10:08 pm",
+    "type":"text"
+},
+{
+    "id":"u1",
+    "message": "Okay. Bye",
+    "key":"22",
+    "time":"10:10 pm",
+    "type":"text"
+}
+]

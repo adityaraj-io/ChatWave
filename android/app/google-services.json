@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "783305057825",
+    "firebase_url": "https://chatwave-460c2-default-rtdb.firebaseio.com",
+    "project_id": "chatwave-460c2",
+    "storage_bucket": "chatwave-460c2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:783305057825:android:1a369548504e6a681a6560",
+        "android_client_info": {
+          "package_name": "com.chatwave"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqCXjoqeW6BY1UeJhxlcqWiBZZ0Zc08MI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

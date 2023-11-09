@@ -1,0 +1,108 @@
+{
+    "id": "u1",
+    "name": "Aditya Raj",
+    "profileImage": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg",
+    "chats": [
+        
+    ],
+    "callLogs": [
+        {
+            "username": "Aditya Raj",
+            "profileImage": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg",
+            "duration":"30 seconds",
+            "time":"Today at 1 pm",
+            "incoming":false
+        },
+        {
+            "username": "Aniket Raj",
+            "profileImage": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/2.jpg",
+            "duration":"10 seconds",
+            "time":"Today at 1:01 pm",
+            "incoming":true
+        },
+        {
+            "username": "Elon Musk",
+            "profileImage": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/3.jpg",
+            "duration":"1hr 20 min",
+            "time":"Today at 1: 05 pm",
+            "incoming":true
+        },
+        {
+            "username": "Mark Zukerburg",
+            "profileImage": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/4.jpg",
+            "duration":"20 seconds",
+            "time":"Today at 2 pm",
+            "incoming":true
+        },
+        {
+            "username": "Mummy",
+            "profileImage": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg",
+            "duration":"2hr 1 min",
+            "time":"Today at 4 pm",
+            "incoming":false
+        },
+        {
+            "username": "Mummy",
+            "profileImage": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg",
+            "duration":"1hr 1 min",
+            "time":"Today at 5 pm",
+            "incoming": true
+        },
+        {
+            "username": "Papa",
+            "profileImage": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg",
+            "duration":"1hr 40 min",
+            "time":"Today at 3 pm",
+            "incoming":false
+        },
+        {
+            "username": "Aditya Raj",
+            "profileImage": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg",
+            "duration":"30 seconds",
+            "time":"Today at 1 pm",
+            "incoming":false
+        },
+        {
+            "username": "Aniket Raj",
+            "profileImage": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/2.jpg",
+            "duration":"10 seconds",
+            "time":"Today at 1:01 pm",
+            "incoming":true
+        },
+        {
+            "username": "Elon Musk",
+            "profileImage": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/3.jpg",
+            "duration":"1hr 20 min",
+            "time":"Today at 1: 05 pm",
+            "incoming":true
+        },
+        {
+            "username": "Mark Zukerburg",
+            "profileImage": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/4.jpg",
+            "duration":"20 seconds",
+            "time":"Today at 2 pm",
+            "incoming":true
+        },
+        {
+            "username": "Mummy",
+            "profileImage": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg",
+            "duration":"2hr 1 min",
+            "time":"Today at 4 pm",
+            "incoming":false
+        },
+        {
+            "username": "Mummy",
+            "profileImage": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg",
+            "duration":"1hr 1 min",
+            "time":"Today at 5 pm",
+            "incoming": true
+        },
+        {
+            "username": "Papa",
+            "profileImage": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg",
+            "duration":"1hr 40 min",
+            "time":"Today at 3 pm",
+            "incoming":false
+        }
+    ]
+}

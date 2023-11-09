@@ -1,0 +1,4 @@
+export const DEFAULT_PROFILE_URI = 'https://firebasestorage.googleapis.com/v0/b/chatwave-460c2.appspot.com/o/images%2Favatar.png?alt=media&token=687b4db2-ec5e-486d-bdcc-a8ceba4262cb&_gl=1*18ydglt*_ga*MTc4OTI3NTkzMS4xNjk2MTMyMjA4*_ga_CW55HF8NVT*MTY5OTI4MTg3NC4zMi4xLjE2OTkyODI3NTYuNDIuMC4w'
+
+export const THEME_COLOR = '#FF5A66'
+export const DEFAULT_URI_PIC = 'https://firebasestorage.googleapis.com/v0/b/chatwave-460c2.appspot.com/o/images%2Favatar.png?alt=media&token=687b4db2-ec5e-486d-bdcc-a8ceba4262cb&_gl=1*7xyjmk*_ga*MTc4OTI3NTkzMS4xNjk2MTMyMjA4*_ga_CW55HF8NVT*MTY5OTM2OTM3NC4zNC4xLjE2OTkzNzE0ODIuNTIuMC4w'
