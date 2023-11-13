@@ -8,7 +8,7 @@ import { TouchableOpacity } from 'react-native';
 
 const SeeProfieScreen = ({route}) => {
     const navigation = useNavigation();
-    const {username, email, about, interests, image} = route.params;
+    const {username, email, about, interests, image, status} = route.params;
     const [loading, setLoading] = useState(false)
     const [images, setImages] = useState([])
     const [visible, setIsVisible] = useState(false);
@@ -34,7 +34,7 @@ const SeeProfieScreen = ({route}) => {
     />
           </TouchableOpacity>
 
-    
+    <Text style={{color: status==='online'?'lightgreen':'lightgray'}}>{status}</Text>
     <Text style={styles.username}>{username}</Text>
     <Text style={styles.email}>{email}</Text>
     {/* <Text style={styles.status}>Online</Text> */}

@@ -6,6 +6,8 @@ import MaterialTextInput from '../components/MaterialTextInput'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { DEFAULT_PROFILE_URI } from '../constants'
 
 const RegisterScreen = () => {
   const [loading, setLoading] = useState(false)
@@ -40,17 +42,20 @@ const RegisterScreen = () => {
                 about: about.trim(),
                 uid: userCredentials.user.uid,
                 interests: interests,
+                profileImage: DEFAULT_PROFILE_URI,
+                status: 'online'
               }).then(()=>{
-                // navigation.dispatch(
-                //   CommonActions.reset({
-                //     index: 0,
-                //     routes: [{ name: 'EditImage' }],
-                //   })
-                // );
+               AsyncStorage.setItem('uid', userCredentials.user.uid).then(()=>{
                 navigation.navigate('EditImage', {
                   register: true,
                 })
                 setLoading(false)
+               }).catch((error)=>{
+                alert('Something Went Wrong, Please Login.')
+                console.log(error.message);
+                setLoading(false)
+               })
+                
               }).catch((error)=>{
                 navigation.dispatch(
                   CommonActions.reset({
@@ -140,7 +145,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#333333',
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    minHeight: Dimensions.get('window').height
+    minHeight: Dimensions.get('window').height,
+    marginBottom: Dimensions.get('screen').height-Dimensions.get('window').height
   },
   image: {
     width: 250,

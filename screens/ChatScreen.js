@@ -30,20 +30,15 @@ const ChatScreen = ({route}) => {
   const [images, setImages] = useState([])
   const [visible, setIsVisible] = useState(false);
   const [isPermission, setIsPermission] = useState(false);
+  const [isLoading, setIsLoading] = useState(true)
+  const [badge, setBadge] = useState(0)
 
   navigation.setOptions({
-    headerTitle: () => <TouchableOpacity onPress={()=>navigation.navigate('SeeProfile', {username: username, image: recieverData.profileImage, about: recieverData.about, email: recieverData.email, interests: recieverData.interests})} style={{flex: 1}}>
+    headerTitle: () => <TouchableOpacity onPress={()=>navigation.navigate('SeeProfile', {username: username, image: recieverData.profileImage, about: recieverData.about, email: recieverData.email, interests: recieverData.interests, status: recieverData.status})} style={{flex: 1, backgroundColor: '#333333'}}>
       <Text style={{color: 'lightgray', fontSize: 18, fontWeight: 'bold'}}>{username}</Text>
+      {recieverData.status && <Text style={{color: 'lightgray', fontSize: 12}}>{recieverData.status}</Text>}
     </TouchableOpacity>,
-    headerRight: () => <View style={{flexDirection: 'row', width: 'auto'}}>
-      <TouchableOpacity style={{backgroundColor: '#444444', padding: 10, borderRadius: 30, marginRight: 10}}>
-        <Image style={{width: 15, height: 15, padding: 10, tintColor: 'white'}} source={require('../assets/images/call_chat.png')} />
-      </TouchableOpacity>
-      <TouchableOpacity style={{backgroundColor: '#444444', padding: 10, borderRadius: 30}}>
-        <Image style={styles.callImage} source={require('../assets/images/video-camera.png')} />
-      </TouchableOpacity>
-      
-    </View>
+    
   })
 
   const checkStoragePermission = async () => {
@@ -87,26 +82,31 @@ const ChatScreen = ({route}) => {
                 }));
                 console.log(result)
                 await setData(result);
-                // setLoading(false);
-
+                scrollRef.current.scrollToEnd({ animated: true })
               }
               
-              // setLoading(false);
           }
-          // setLoading(false);
 
         })
       } catch (error) {
         setLoading(false);
         setErr(true);
       }
-    })()
-    getSenderData();
-    getRecieverData();
-    checkStoragePermission();
-    if (scrollRef.current) {
-      scrollRef.current.scrollToEnd({ animated: true });
-    }
+    })();
+    (async()=>{
+      await getSenderData();
+      await getRecieverData();
+      await checkStoragePermission();
+      await updateSenderData();
+      await getRecieverBadge();
+      setIsLoading(false)
+      if (scrollRef.current) {
+        scrollRef.current.scrollToEnd({ animated: true });
+      }
+    })();
+
+
+
 
   }, [])
 
@@ -114,10 +114,9 @@ const ChatScreen = ({route}) => {
     try {
       database()
         .ref(`/users/${authid}`)
-        .once('value', (snapshot) => {
+        .on('value', (snapshot) => {
           const userData = snapshot.val();
           if (userData) {
-            // Assuming that "name" is a property in the userData object
             const senderName = userData.name;
             const senderProfile = userData.profileImage;
             console.log('Name Below - Sender');
@@ -130,118 +129,184 @@ const ChatScreen = ({route}) => {
               profileImage: senderProfile,
             })
           } else {
-            // Handle the case where userData is not available
+            console.log('Err');
           }
         })
-        .catch((error) => {
-          console.log(error.message);
-        });
+        
     } catch (error) {
       console.log(error.message);
     }
   };
 
+
   const getRecieverData = () => {
     try {
       database()
         .ref(`/users/${uid}`)
-        .once('value', (snapshot) => {
+        .on('value', (snapshot) => {
           const userData = snapshot.val();
           if (userData) {
-            // Assuming that "name" is a property in the userData object
             const recieverName = userData.name;
             const recieverProfile = userData.profileImage;
-            console.log('Name Below - Reciever');
-            console.log(userData.name)
-            console.log(userData.uid)
-            console.log(userData.profileImage)
-            console.log('Receiver- Interests');
-            console.log(userData.email)
             setRecieverData({
               name: recieverName,
               profileImage: recieverProfile,
               interests: userData.interests,
               email: userData.email,
               about: userData.about,
+              status: userData.status,
             })
           } else {
-            // Handle the case where userData is not available
+            
           }
         })
-        .catch((error) => {
-          console.log(error.message);
-        });
+        
     } catch (error) {
       console.log(error.message);
     }
   }
 
+  const updateSenderData = async () => {
+    try {
+      const reference = database().ref(`/users/${authid}/chats/${uid}`);
+      const snapshot = await reference.once('value');
+      
+      if (snapshot.exists()) {
+        console.log("Snapshot value:", snapshot.val());
+  
+        if (snapshot.val().unreadMessages !== undefined) {
+          await reference.update({
+            unreadMessages: 0,
+          });
+          console.log("Unread messages updated to 0");
+        } else {
+          console.log("unreadMessages exists but is undefined");
+          await reference.update({
+            unreadMessages: 0,
+          });
+          console.log("Unread messages updated to 0");
+        }
+      } else {
+        console.log("Chat node doesn't exist");
+      }
+    } catch (error) {
+      console.error("Error updating sender data:", error);
+    }
+  };
+
+  const getRecieverBadge = async () => {
+    try {
+      const reference = database().ref(`/users/${uid}/chats/${authid}`);
+      const snapshot = await reference.once('value');
+      
+      if (snapshot.exists()) {
+        console.log("Snapshot value:", snapshot.val());
+  
+        if (snapshot.val().unreadMessages !== undefined) {
+          setBadge(snapshot.val().unreadMessages);
+          console.log("Badge gotten");
+        } else {
+          setBadge(0);
+          console.log("unreadMessages doesn't exist");
+          console.log("Badge set to 0");
+        }
+      } else {
+        console.log("Chat node doesn't exist");
+      }
+    } catch (error) {
+      console.error("Error getting receiver badge:", error);
+    }
+  };
+
+
   const sendMessage = async() => {
-    if(message===''){
+   try {
+    if(message.trim()===''){
 
     }else{
-      let msg = message;
+      let msg = message.length>10?message.trim().slice(0,5)+'...':message.trim();
       try {
-        const senderReference = database().ref(`/users/${authid}/messages/${uid}`)
+        const timeid = new Date().getTime();
+        const senderReference = database().ref(`/users/${authid}/messages/${uid}/${timeid}`)
         const senderChatReference = database().ref(`/users/${authid}/chats/${uid}`)
         const recieverChatReference = database().ref(`/users/${uid}/chats/${authid}`)
-        const receiverReference = database().ref(`/users/${uid}/messages/${authid}`)
+        const receiverReference = database().ref(`/users/${uid}/messages/${authid}/${timeid}`)
         setMessage('')
 
-      await senderReference.push({
-        id: authid,
-        message: msg,
-        time: new Date().toISOString(),
-        type: 'text',
-      });
-      await receiverReference.push({
-        id: authid,
-        message: msg,
-        time: new Date().toISOString(),
-        type: 'text',
-      })
+        await senderReference.set({
+          id: authid,
+          message: message.trim(),
+          time: new Date().toISOString(),
+          type: 'text',
+          timeid: timeid,
+        });
+    
+        await receiverReference.set({
+          id: authid,
+          message: message.trim(),
+          time: new Date().toISOString(),
+          type: 'text',
+          timeid: timeid,
+        });
+
+
       await senderChatReference.update({
         id: uid,
         profileImage: recieverData.profileImage,
         username: recieverData.name,
-        lastMessage: msg,
+        lastMessage: 'You - '+msg,
         lastMessageTime: new Date().toISOString(),
       }).catch((err)=>{
         console.log(err.message)
       })
 
-      await recieverChatReference.update({
-        id: authid,
-        profileImage: senderData.profileImage,
-        username: senderData.name,
-        lastMessage: msg,
-        lastMessageTime: new Date().toISOString(),
-      }).catch((err)=>{
-        console.log(err.message)
-      })
+      if(recieverData.status==='offline'){
+        await recieverChatReference.update({
+          id: authid,
+          profileImage: senderData.profileImage,
+          username: senderData.name,
+          lastMessage: msg,
+          lastMessageTime: new Date().toISOString(),
+          unreadMessages: badge+1,
+        }).catch((err)=>{
+          console.log(err.message)
+        }).then(()=>{
+          console.log('Updated Value of unread messsages');
+          setBadge(badge+1)
+        })
+      }else{
+        await recieverChatReference.update({
+          id: authid,
+          profileImage: senderData.profileImage,
+          username: senderData.name,
+          lastMessage: msg,
+          lastMessageTime: new Date().toISOString(),
+        }).catch((err)=>{
+          console.log(err.message)
+        }).then(()=>{
+          console.log('Done');
+        })
+      }
 
       } catch (error) {
         console.log(error.message)
         alert(error.message)
       }
       
-      // .then(()=>{
-      //   console.log('Success')
-        
-      // }).catch((err)=>{
-      //   console.log(err)
-      // })
     }
+   } catch (error) {
+    console.error("Error sending message:", error);
+
+   }
   }
+
 
   const handle_Select_Image = async() => {
     await launchImageLibrary({selectionLimit: 1, assetRepresentationMode: 'auto', quality: 1, mediaType: 'photo'}, async({assets, didCancel, errorCode, errorMessage})=>{
         if(didCancel){
-            // setImageUri(DEFAULT_PROFILE_URI)
             console.log('cancelled');
         }else{
             if(errorCode==null){
-                // log
                 if(Platform.OS==='android'){
                   if(Platform.Version<=33){
                     sendImage(assets[0].originalPath, assets[0].fileName)
@@ -269,78 +334,81 @@ const ChatScreen = ({route}) => {
                     ],
                     {cancelable: false}
                 )
-                // setImageUri(DEFAULT_PROFILE_URI)
                 console.log(errorCode)
             }
         }
     })
 }
 
-  const sendImage = async(path, fileName) => {
-      setIsModal(true)
-      const reference = storage().ref(`/chat-pics/${fileName}`)
-      const task = reference.putFile(path)
-      task.on('state_changed', taskSnapshot=>{
-        // console.log(taskSnapshot.b)
-        let transfer = taskSnapshot.bytesTransferred / taskSnapshot.totalBytes * 100
-        transfer = (transfer).toFixed(1).toString()+'%'
-        setTransferred(transfer)
+const sendImage = async (path, fileName) => {
+  // const timeid = new Date().getTime();
+  try {
+    setIsModal(true);
 
-      })
-      task.then(async()=>{
-        const url = await reference.getDownloadURL();
-        // let msg = message;
-      try {
-        const senderReference = database().ref(`/users/${authid}/messages/${uid}`)
-        const senderChatReference = database().ref(`/users/${authid}/chats/${uid}`)
-        const recieverChatReference = database().ref(`/users/${uid}/chats/${authid}`)
-        const receiverReference = database().ref(`/users/${uid}/messages/${authid}`)
-        setMessage('')
+    const reference = storage().ref(`/chat-pics/${fileName}`);
+    const task = reference.putFile(path);
 
-      await senderReference.push({
-        id: authid,
-        imageSource: url,
-        time: new Date().toISOString(),
-        type: 'image',
-      });
-      await receiverReference.push({
-        id: authid,
-        imageSource: url,
-        time: new Date().toISOString(),
-        type: 'image',
-      })
-      await senderChatReference.update({
-        id: uid,
-        profileImage: recieverData.profileImage,
-        username: recieverData.name,
-        lastMessage: 'Photo',
-        lastMessageTime: new Date().toISOString(),
-      }).catch((err)=>{
-        console.log(err.message)
-      })
+    task.on('state_changed', (taskSnapshot) => {
+      const transfer = ((taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100).toFixed(1).toString() + '%';
+      setTransferred(transfer);
+    });
 
-      await recieverChatReference.update({
-        id: authid,
-        profileImage: senderData.profileImage,
-        username: senderData.name,
-        lastMessage: 'Photo',
-        lastMessageTime: new Date().toISOString(),
-      }).catch((err)=>{
-        console.log(err.message)
-      })
+    await task;
 
-      setIsModal(false)
+    const url = await reference.getDownloadURL();
+    const timeid = new Date().getTime();
+    const senderReference = database().ref(`/users/${authid}/messages/${uid}/${timeid}`);
+    const senderChatReference = database().ref(`/users/${authid}/chats/${uid}`);
+    const receiverReference = database().ref(`/users/${uid}/messages/${authid}/${timeid}`);
+    const receiverChatReference = database().ref(`/users/${uid}/chats/${authid}`);
+    setMessage('');
 
-      } catch (error) {
-        console.log(error.message)
-        alert(error.message)
-        setIsModal(false)
-      }
-      })
-    
+    // Send image message
+    await senderReference.set({
+      id: authid,
+      imageSource: url,
+      time: new Date().toISOString(),
+      type: 'image',
+      timeid: timeid,
+    });
 
+    await receiverReference.set({
+      id: authid,
+      imageSource: url,
+      time: new Date().toISOString(),
+      type: 'image',
+      timeid: timeid,
+    });
 
+    // Update chat data
+    await senderChatReference.update({
+      id: uid,
+      profileImage: recieverData.profileImage,
+      username: recieverData.name,
+      lastMessage: 'You sent a photo',
+      lastMessageTime: new Date().toISOString(),
+    });
+
+    await receiverChatReference.update({
+      id: authid,
+      profileImage: senderData.profileImage,
+      username: senderData.name,
+      lastMessage: 'Photo',
+      lastMessageTime: new Date().toISOString(),
+      unreadMessages: badge + 1,
+    });
+
+    setBadge(badge + 1);
+    setIsModal(false);
+
+  } catch (error) {
+    console.error("Error sending image:", error);
+    alert("Error sending image. Please try again.");
+    setIsModal(false);
   }
+};
+
+
   if(loading||errorData){
     if(errorData){
       return <View style={[styles.container, {justifyContent: 'center'}]}>
@@ -352,10 +420,13 @@ const ChatScreen = ({route}) => {
     </View>
   }
   return (
-    <KeyboardAvoidingView keyboardVerticalOffset={30} behavior={'padding'} style={styles.container}>
+    <KeyboardAvoidingView keyboardVerticalOffset={60} behavior={'padding'} style={styles.container}>
       <ScrollView ref={scrollRef} onLayout={() => scrollRef.current.scrollToEnd({ animated: true })}>
       <EncryptMessage />
+      {isLoading && <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', minHeight: Dimensions.get('window').height-Dimensions.get('window').width}}>
+      <ActivityIndicator size={'large'} color={'#FF5A66'} />
 
+      </View>}
       <View style={{paddingHorizontal: 10, paddingBottom: 10}}>
         {(data)
               .sort((a, b) => {
@@ -364,19 +435,27 @@ const ChatScreen = ({route}) => {
                 const timeB = new Date(b.time);
                 return timeA - timeB;
               })
-              .map((item) => (
+              .map((item, index) => (
                 item.type === 'text' ? (
                   <Chat
                     message={item.message}
-                    key={item.id} // Assuming "id" is unique and can be used as a key
+                    key={index} // Assuming "id" is unique and can be used as a key
                     isMe={item.id === authid}
-                    time={dayjs(item.time).fromNow(false)}
+                    time={item.time}
+                    sendBy={item.id === authid?'You': username.toString()}
+                    timeid={item.timeid}
+                    uid={uid}
+                    authid={authid}
                   />
                 ) : item.type === 'image' ? (
                   <MessageImage
-                    time={dayjs(item.time).fromNow()}
+                    time={item.time}
                     source={item.imageSource} // Assuming you have an "imageSource" property
                     isMe={item.id === authid}
+                    sendBy={item.id === authid?'You': username.toString()}
+                    timeid={item.timeid}
+                    uid={uid}
+                    authid={authid}
                     onPress={async()=>{
                       await setImages([{uri: item.imageSource}]);
         

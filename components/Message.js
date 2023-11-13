@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native'
-const Message = ({onPress=()=>{}, userName='User Name Here', profileImageUri='', lastMessage, isBadgeShown=false, badgeCount=0, lastMessageTime='', borderShown=true, onProfileImagePress=()=>{}}) => {
+const Message = ({onPress=()=>{}, userName='User Name Here', profileImageUri='', lastMessage, isBadgeShown=false, badgeCount, lastMessageTime='', borderShown=true, onProfileImagePress=()=>{}}) => {
   return (
     <TouchableOpacity onPress={onPress} style={[styles.container, {borderBottomWidth: borderShown? StyleSheet.hairlineWidth:null}]}>
       <TouchableOpacity onPress={onProfileImagePress}>
@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     badge: {
       backgroundColor: '#FF5A66',
       paddingHorizontal: 7,
-      borderRadius: 50
+      borderRadius: 50,
+      color: 'white'
     }
 })

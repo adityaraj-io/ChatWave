@@ -214,7 +214,7 @@ const EditImage = ({route}) => {
     <View style={styles.container}>
       <TouchableOpacity onPress={handle_Select_Image} >
         <Image style={styles.image} source={{uri: imageUri}} />
-        <Text style={styles.text}>Set Profile Image</Text>
+        <Text style={styles.text}>{register? 'Set Profile Image': 'Set a new profile image'}</Text>
       </TouchableOpacity>
       <View style={{width: '100%', alignItems: 'center', justifyContent: 'center', height: 200}}>
         <MaterialButton onPress={uploadAndUpdateData} text={'Save Changes'} width={'70%'} disabled={imageUri===DEFAULT_PROFILE_URI} backgroundColor={THEME_COLOR} isLoading={false||load} />

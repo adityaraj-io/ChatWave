@@ -11,10 +11,28 @@ import EditImage from '../screens/EditImage';
 import EditProfile from '../screens/EditProfile';
 import Conversation from '../screens/Conversation';
 import SeeProfieScreen from '../screens/SeeProfieScreen';
+import NetInfo from "@react-native-community/netinfo";
+import NetworkModal from '../components/NetworkModal';
 
 const Stack = createNativeStackNavigator();
 export default function NavContainer() {
+
+  const [connectionStatus, setConnectionStatus] = React.useState(false);
+
+  const handleNetworkChange = (state) => {
+      setConnectionStatus(state.isConnected);
+      console.log(connectionStatus)
+  };
+
+  React.useEffect(() => {
+  const netInfoSubscription = NetInfo.addEventListener(handleNetworkChange);
+  return () => {
+    netInfoSubscription && netInfoSubscription();
+  };
+}, []);
+
   return (
+    <>
     <NavigationContainer>
         <Stack.Navigator
             initialRouteName='Start'
@@ -38,7 +56,7 @@ export default function NavContainer() {
               headerTitle: 'Set Profile Image'
               // headerShadowVisible: false,
             }} />
-            <Stack.Screen name='Conversation'component={Conversation} options={{
+            {/* <Stack.Screen name='Conversation'component={Conversation} options={{
               headerShown: true,
               headerStyle: {
                 backgroundColor: "#333333",
@@ -47,7 +65,7 @@ export default function NavContainer() {
               headerTintColor: "#fff",
               headerTitle: 'Search People'
               // headerShadowVisible: false,
-            }} />
+            }} /> */}
             <Stack.Screen name='EditProfile'component={EditProfile} options={{
               headerShown: true,
               headerStyle: {
@@ -91,5 +109,8 @@ export default function NavContainer() {
 
         </Stack.Navigator>
     </NavigationContainer>
+    <NetworkModal visible={!connectionStatus} />
+
+    </>
   );
 }

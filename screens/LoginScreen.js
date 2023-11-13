@@ -6,6 +6,8 @@ import MaterialTextInput from '../components/MaterialTextInput'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TouchableOpacity } from 'react-native'
 import auth from '@react-native-firebase/auth'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import database from '@react-native-firebase/database'
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -27,14 +29,25 @@ const LoginScreen = () => {
       setLoading(true)
       auth()
       .signInWithEmailAndPassword(email.trim(), password.trim())
-      .then(()=>{
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{ name: 'Main' }],
-          })
-        );
-        setLoading(false)
+      .then(async(userCredentials)=>{
+        // await AsyncStorage.clear();
+        console.log('usercred - ',userCredentials.user.uid);
+        let uid = userCredentials.user.uid
+        await database().ref(`/users/${uid}`).update({status: 'online'}).catch((err)=>alert(err.message))
+        AsyncStorage.setItem('uid', uid).then((value)=>{
+          console.log('Item set - ',value)
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: 'Main' }],
+            })
+          );
+          setLoading(false)
+        }).catch((error)=>{
+          alert('Please Try Again. Something Went Wrong');
+          console.log(error.message);
+          setLoading(false)
+        })
       }).catch((error)=>{
         setLoading(false)
         if (error.code === 'auth/email-already-in-use') {

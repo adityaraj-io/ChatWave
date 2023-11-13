@@ -101,7 +101,7 @@ const Conversation = () => {
         </View>}
         renderItem={({ item, index }) => (
          item.uid!==user.uid &&  <Message
-         onPress={()=>navigation.replace('Chat', {username: item.name, uid: item.uid, authid: user.uid})}
+         onPress={()=>navigation.navigate('Chat', {username: item.name, uid: item.uid, authid: user.uid})}
          profileImageUri={item.profileImage}
          userName={item.name}
          key={item.uid}

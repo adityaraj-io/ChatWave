@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Modal, ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { THEME_COLOR } from '../constants';
 
-const LoadingModal = ({ visible, isProgress=false, progressWidth }) => {
+const LoadingModal = ({ visible, isProgress=false, progressWidth, text='', customText=false }) => {
   return (
     <Modal transparent={true} animationType="slide" visible={visible}>
       <View style={styles.modalBackground}>
@@ -15,6 +15,7 @@ const LoadingModal = ({ visible, isProgress=false, progressWidth }) => {
           </View>}
           {isProgress && <Text style={{color: 'black', textAlign: 'center', marginTop: isProgress?0: 0}}>{progressWidth}</Text>}
           <Text style={{color: 'black', marginTop: isProgress?0: 20}}>Please Wait</Text>
+          {customText && <Text style={{color: 'black', marginTop: 5}}>{text}</Text>}
         </View>
       </View>
     </Modal>

@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native'
 import auth from '@react-native-firebase/auth'
 import database from '@react-native-firebase/database';
 import LoadingModal from '../components/LoadingModal'
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const ProfileScreen = () => {
   const [user, setUser] = useState();
@@ -16,16 +16,22 @@ const ProfileScreen = () => {
   const [data, setData] = useState();
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false)
+
   const signOut = async() => {
     setLoading(true)
     try {
-      auth().signOut().then(()=>{
-        setLoading(false)
-        navigation.replace('Start')
-      }).catch((error)=>{
-        alert('Some Error Occured, please Try again Later')
-        setLoading(false)
+      let uid = await AsyncStorage.getItem('uid')
+      await database().ref(`/users/${uid}`).update({status: 'offline'}).catch((err)=>alert(err.message)).then(()=>{
+        auth().signOut().then(async()=>{
+          setLoading(false)
+          await AsyncStorage.removeItem('uid')
+          navigation.replace('Start')
+        }).catch((error)=>{
+          alert('Some Error Occured, please Try again Later')
+          setLoading(false)
+        })
       })
+      
 
     } catch (error) {
       alert('Some Error Occured, please Try again Later')
@@ -88,8 +94,9 @@ const ProfileScreen = () => {
       />
         </TouchableOpacity>
       
+      <Text style={{color: data.status==='online'?'lightgreen':'lightgray'}}>{data.status}</Text>
       <Text style={styles.username}>{data.name}</Text>
-      <Text style={styles.email}>{user.email}</Text>
+      <Text style={styles.email}>{user!==null?user.email:''}</Text>
       {/* <Text style={styles.status}>Online</Text> */}
 
       <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', flexDirection: 'row', padding: 10}}>
@@ -109,7 +116,7 @@ const ProfileScreen = () => {
       {/* Contact Information */}
       <View style={styles.section}>
         <Text style={styles.sectionHeader}>Contact Information</Text>
-        <Text style={styles.contactInfo}>Email: {user.email}</Text>
+        <Text style={styles.contactInfo}>Email: {user!==null?user.email:''}</Text>
         {/* <Text style={styles.contactInfo}>Phone: (123) 456-7890</Text> */}
       </View>
 
@@ -189,8 +196,6 @@ const styles = StyleSheet.create({
   },
   blob: {
     height: 150,
-    // marginHorizontal: 20,
-    // marginRight: 50,
     backgroundColor: '#FF5A66',
     width: '90%',
     borderTopRightRadius: 15,
