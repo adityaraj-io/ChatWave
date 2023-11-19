@@ -83,7 +83,7 @@ const HomeScreen = () => {
         <MaterialTextInput
           value={query}
           onChangeText={setQuery}
-          placeholder={'Search with Email'}
+          placeholder={'Search with Name'}
           backgroundColor={'#444444'}
           width={'90%'}
           placeholderTextColor={'lightgray'}
